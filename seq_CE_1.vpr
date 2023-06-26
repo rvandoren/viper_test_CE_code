@@ -1,0 +1,11 @@
+method update(values: Seq[Int], x: Int, y: Bool) returns (updatedValues: Seq[Int])
+  requires |values| > 3
+  requires values[0] == 2
+  ensures  |values| == |updatedValues|
+  ensures  updatedValues[0] != updatedValues[1]
+  ensures  updatedValues[1] != updatedValues[2]
+{
+  updatedValues := values
+  updatedValues := updatedValues[1 := 42]
+  updatedValues := updatedValues[2 := 42]
+}

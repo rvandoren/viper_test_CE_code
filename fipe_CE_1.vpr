@@ -1,0 +1,102 @@
+field val: Int
+field val2: Int
+
+predicate P(x: Ref) {
+  acc(x.val)
+}
+
+method huh(a: Ref, a_1: Ref)
+  requires a != a_1
+{
+  inhale acc(a.val)
+  inhale acc(a_1.val2)
+  assert false
+}
+
+method huh2(a: Ref, b: Ref)
+  requires a == b
+{
+  inhale acc(a.val)
+  inhale acc(b.val2)
+  assert a!=b
+}
+
+method urgh(x: Ref)
+ensures P(x) && [true, perm(P(x)) == none] && unfolding P(x) in [true, perm(x.val) == none]
+{
+  inhale P(x)
+}
+
+method test00()
+{
+  var a: Ref
+  inhale acc(a.val)
+  var b: Ref
+  a := b
+  assert 1==2
+}
+
+method test01a(c1: Ref, c2: Ref)
+  requires acc(c1.val, 1/2) && acc(c2.val, 1/2) && c1 == c2
+{
+  assume perm(c1.val) >= 1/1
+  //:: ExpectedOutput(assert.failed:assertion.false)
+  assert c1!=c2
+}
+
+method test01b(c1: Ref, c2: Ref, c3: Ref)
+  requires acc(c1.val, 1/2) && acc(c2.val, 1/2) && acc(c2.val, 1/2)
+  requires c3 == c1 || c3 == c2
+{
+  assume perm(c3.val) >= 1/1
+  //:: ExpectedOutput(assert.failed:assertion.false)
+  assert false
+}
+
+method test01c(c1: Ref, c2: Ref)
+  requires acc(c1.val, 1/2) && acc(c2.val, 1/2)
+{
+  assume perm(c1.val) >= 1/1
+  assume c1 == c2
+  //:: ExpectedOutput(assert.failed:assertion.false)
+  assert false
+}
+
+method test01d(c1: Ref, c2: Ref)
+  requires acc(c1.val, 1/2) && acc(c2.val, 1/2)
+{
+  assume perm(c1.val) >= 1/1
+  exhale acc(c1.val, 1/2)
+  assume c1 == c2
+  //:: ExpectedOutput(assert.failed:assertion.false)
+  assert false
+}
+
+method test02a(c1: Ref, c2: Ref)
+  requires acc(c1.val, 1/2) && acc(c2.val, 1/2) && c1 == c2
+{
+  //:: ExpectedOutput(assert.failed:assertion.false)
+  assert perm(c1.val) <= 1/2
+}
+
+method test02b(c1: Ref, c2: Ref, c3: Ref)
+  requires acc(c1.val, 1/2) && acc(c2.val, 1/2) && acc(c3.val, 1/2)
+  requires c3 == c1 || c3 == c2
+{
+  //:: ExpectedOutput(assert.failed:assertion.false)
+  assert perm(c3.val) <= 1/2
+}
+
+
+method test03a(c1: Ref, c2: Ref)
+  requires acc(c1.val, 1/2) && acc(c2.val, 1/2) && c1 == c2
+{
+  assert perm(c1.val) >= 1/1
+}
+
+method test03b(c1: Ref, c2: Ref, c3: Ref)
+  requires acc(c1.val, 1/2) && acc(c2.val, 1/2) && acc(c3.val, 1/2)
+  requires c3 == c1 || c3 == c2
+{
+  assert perm(c3.val) >= 1/1
+}

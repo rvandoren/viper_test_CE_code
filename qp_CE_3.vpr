@@ -1,0 +1,14 @@
+field f: Int
+field g: Int
+
+method m(s: Seq[Ref])
+  requires forall i1: Int, i2: Int :: i1 >= 0 && i2 > i1 && i2 < |s| ==> s[i1] != s[i2]
+  requires forall i: Int :: i >= 0 && i < |s| ==> acc(s[i].f) && acc(s[i].g)
+{
+    assume |s| > 5
+    assume s[0].g == 3
+    assume s[0].f == 6
+    assert s[0].g < 5
+    assert s[0].f > 5
+    assert s[2].f > 8
+}

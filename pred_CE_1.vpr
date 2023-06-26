@@ -1,0 +1,31 @@
+field left: Int
+field right: Int
+field next: Ref
+
+predicate tuple(this: Ref, that: Ref) {
+  acc(this.left) && acc(this.right)
+}
+
+predicate tryouttuple(other: Ref) {
+  acc(other.next, write) && tuple(other, other)
+}
+
+method setTuple(this: Ref, that: Ref, other: Ref, l: Int, r: Int, y: Bool)
+  //requires tuple(this, that)
+  requires tryouttuple(other)
+  //ensures tuple(this) && (unfolding tuple(this) in this.left + this.right) == old(unfolding tuple(this) in this.left + this.right + 1)
+{
+  // unfold tuple(this, that)
+  // var x : Int
+  // assume x == 10
+  // label first
+  // this.left := l
+  // this.right := r
+  unfold tryouttuple(other)
+  //assert old[first](this.left == l)
+  fold tuple(this, that)
+}
+
+// predicate tryouttuple(other: Ref) {
+//   acc(other.next, write) && (other.next != null ==> acc(tryouttuple(other.next), write))
+// }

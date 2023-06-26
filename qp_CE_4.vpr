@@ -1,0 +1,14 @@
+
+
+predicate P1(i: Int)
+predicate P2(j: Int, r: Ref)
+
+method main(s: Set[Ref], r: Ref)
+    requires r in s
+    requires forall i: Int :: 0 <= i && i < 10 ==> P1(i)
+    requires forall i: Int, rp: Ref :: 0 <= i && i < 10 && rp in s ==> P2(i, rp)
+{
+    assert P1(5)
+    assert P2(7, r)
+    assert P2(12, r)
+}

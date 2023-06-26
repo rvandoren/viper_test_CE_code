@@ -1,0 +1,12 @@
+field left: Ref
+field right: Int
+
+predicate tuple(this: Ref) {
+  acc(this.left) && acc(this.right)
+}
+
+method simpler(this: Ref, other: Ref)
+  requires tuple(this)
+{
+  exhale tuple(other)
+}

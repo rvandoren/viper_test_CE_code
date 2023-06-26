@@ -1,0 +1,10 @@
+field f : Int
+
+method try (l: Ref) 
+{
+  var s : Set[Ref]
+  inhale forall r:Ref :: r in s ==> acc(r.f)
+  assume l in s
+  l.f := 3
+  assert false
+}

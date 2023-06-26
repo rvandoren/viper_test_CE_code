@@ -1,0 +1,17 @@
+method t1(x: Int, n: Multiset[Int]) 
+    requires |n| == 1
+    requires Multiset(1) subset n
+{
+    assert n intersection Multiset(1) == Multiset(1)
+    assert n == Multiset(2)
+}
+
+method t2(c: Bool) {
+    var m: Multiset[Bool] := Multiset(true, true, false)
+    var a: Int := true in m
+    assert a == 2
+    var b: Int := c in m
+ 
+    assert |(Multiset(a) union Multiset(2))| == 2
+    assert Multiset(a) setminus Multiset(b) == Multiset(2)
+}

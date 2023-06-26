@@ -1,0 +1,29 @@
+field first : Ref
+field second : Ref
+
+method inc(nodes: Set[Ref], x: Ref)
+  requires forall n:Ref :: { n.first } n in nodes ==> 
+    acc(n.first) && 
+    (n.first != null ==> n.first in nodes)
+  requires forall n:Ref :: { n.second } n in nodes ==> 
+    acc(n.second) && 
+    (n.second != null ==> n.second in nodes)
+  requires x in nodes
+{
+  var y : Ref
+  if(x.second != null) {
+    y := x.second.first
+  }
+}
+
+field val : Int
+
+function address(i:Int) : Ref
+
+method test()
+{
+  inhale acc(address(3).val, 1/2)
+  inhale acc(address(2).val, 1/2)
+  inhale acc(address(1).val, 1/2)
+  exhale forall i:Int :: 1<=i && i<=3 ==> acc(address(i).val, 1/2)
+}
