@@ -1,7 +1,3 @@
-
-
-// DONE: correct CE by Carbon
-
 method max(x: Int, y: Int) returns (n: Int)
     requires(-2 > x && -4 > y)
     ensures(n > -2)

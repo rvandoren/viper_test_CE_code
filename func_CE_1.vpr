@@ -1,5 +1,3 @@
-
-
 function foo(z: Int): Int
 {
   12
