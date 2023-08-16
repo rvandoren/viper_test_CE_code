@@ -1,0 +1,8 @@
+method basicMethod(b: Bool, i: Int, n: Set[Int])
+  requires i < 6
+  requires b == true
+  requires n == Set()
+{
+  assert b
+  assert Set(i) == n
+}

@@ -1,0 +1,17 @@
+field next: Int
+
+predicate Struct(this: Ref) {
+  acc(this.next)
+}
+
+method foo(a: Ref, b: Ref)
+  requires acc(a.next) --* Struct(b)
+  requires acc(a.next)
+  requires Struct(b)
+{
+  unfold Struct(b)
+  a.next := 5
+  b.next := a.next
+  assert acc(a.next) --* Struct(b)
+  assert acc(b.next) --* Struct(b)
+}

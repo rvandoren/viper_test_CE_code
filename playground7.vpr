@@ -1,0 +1,23 @@
+field f: Int
+
+domain List[T] {
+    function nil(): List[T]
+    function cons(x: T, xs: List[T]): List[T]
+    axiom nil_cons {
+        forall z: T, zs: List[T] :: cons(z, zs) != nil()
+    }
+}
+
+function foo(r: Ref): Int 
+  requires acc(r.f)
+{
+  r.f
+}
+
+method test(x: Ref, xs: List[Int], n: List[Int])
+  requires n == nil()
+  requires acc(x.f)
+{
+  assert n != cons(5, xs)
+  assert foo(x) == 5
+}

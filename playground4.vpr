@@ -1,0 +1,9 @@
+field f: Int
+field g: Int
+predicate P(r: Ref) { acc(r.f) }
+
+method m1(x: Ref)
+  requires acc(x.f) --* P(x)
+{
+  assert acc(x.g) --* P(x) 
+}

@@ -1,0 +1,4 @@
+method t2(a: Set[Int]) {
+    var b: Set[Int] := Set(2)
+    assert (a union b) == Set(1, 2)
+}

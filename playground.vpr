@@ -1,10 +1,11 @@
-field f : Int
+field f: Int
 
-method try (l: Ref) 
+method try (r: Ref, s: Seq[Int]) 
+  requires |s| > 2
+  requires acc(r.f)
 {
-  var s : Set[Ref]
-  inhale forall r:Ref :: r in s ==> acc(r.f)
-  assume l in s
-  l.f := 3
-  assert false
+  var x: Int
+  x := s[0]
+  r.f := x
+  assert r.f == 5
 }

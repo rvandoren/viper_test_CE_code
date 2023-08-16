@@ -67,20 +67,20 @@ method m6(x: Ref, y: Ref, p: Perm)
   package acc(x.f, 1/3) --* acc(x.f) // CE should show x != y, p < 1/3
 } 
 
-// quantified wands
-method m7(s: Set[Ref], x: Ref, y: Ref, z: Ref)
-  requires forall r: Ref :: r in s ==> (acc(r.f, 1/2) --* P(r))
-{
-  assume x in s
-  assume z in s
-  assume x != z
-  var yins: Bool := y in s
-  assert (acc(x.f, 1/2) --* P(x))
-  assert (acc(z.f, 1/2) --* P(z))
+// // quantified wands
+// method m7(s: Set[Ref], x: Ref, y: Ref, z: Ref)
+//   requires forall r: Ref :: r in s ==> (acc(r.f, 1/2) --* P(r))
+// {
+//   assume x in s
+//   assume z in s
+//   assume x != z
+//   var yins: Bool := y in s
+//   assert (acc(x.f, 1/2) --* P(x))
+//   assert (acc(z.f, 1/2) --* P(z))
 
-  inhale acc(x.f, 1/2)
-  apply (acc(x.f, 1/2) --* P(x))
-  apply (acc(y.f, 1/2) --* P(y)) // CE should show: x != z, yins = false
-                                 // we have the wand acc(z.f, 1/2) --* P(z),
-                                 // we do not have the wand acc(x.f, 1/2) --* P(x)
-}
+//   inhale acc(x.f, 1/2)
+//   apply (acc(x.f, 1/2) --* P(x))
+//   apply (acc(y.f, 1/2) --* P(y)) // CE should show: x != z, yins = false
+//                                  // we have the wand acc(z.f, 1/2) --* P(z),
+//                                  // we do not have the wand acc(x.f, 1/2) --* P(x)
+// }

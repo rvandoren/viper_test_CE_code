@@ -1,0 +1,10 @@
+field next: Bool
+
+method foo(x: Ref) returns (value: Bool)
+  requires acc(x.next) && x.next
+  ensures value != true
+{
+  value := x.next
+  x.next := false
+  assert !value
+}

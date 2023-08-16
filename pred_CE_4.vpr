@@ -1,23 +1,54 @@
 field x: Int
 field y: Int
+field z: Bool
+field next: Ref
 
 predicate StructA(this: Ref) {
   acc(this.x) && acc(this.y)
 }
 
-predicate StructB(this: Ref) {
-  acc(this.x) && acc(this.y)
+predicate StructB(this: Ref, other: Ref) {
+  acc(this.x) && acc(this.y) && acc(other.x) && acc(other.y)
+}
+
+predicate nothing(this: Ref)
+
+predicate simple(this: Ref) {
+  acc(this.x)
+}
+
+predicate recPred(this: Ref) {
+  recPred(this)
+}
+
+predicate implPred(this: Ref) {
+  acc(this.x) && (this.x == 2 ==> acc(this.y))
+}
+
+predicate decPred(this: Ref) {
+  acc(this.x) && (this.x != 2 ? acc(this.y) : acc(this.z))
+}
+
+predicate hard(this: Ref) {
+  acc(this.next) && (this.next != null ==> hard(this.next))
 }
 
 method foo(a: Ref, b: Ref)
+  requires nothing(a)
+  requires simple(a)
+  requires recPred(a)
+  requires implPred(a)
+  requires decPred(a)
+  requires hard(a)
   requires StructA(a)
-  requires StructB(b)
+  requires StructB(a, b)
+  requires acc(a.y)
   ensures  acc(a.x) && a.x == 42
 {
-  unfold StructA(a)
-  unfold StructB(b)
-  a.x := 3
-  a.y := 4
-  b.x := 5
-  b.y := 6
+  unfold simple(a)
+  unfold decPred(a)
+  a.x := 42
+  a.z := false
+  fold decPred(a)
+  inhale acc(a.x, 1/1)
 }

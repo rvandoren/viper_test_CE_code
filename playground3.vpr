@@ -1,0 +1,15 @@
+field x: Int
+field y: Int
+
+predicate StructA(this: Ref) {
+  acc(this.x) && acc(this.y)
+}
+
+method compare (this: Ref, s: Seq[Int]) 
+  requires |s| > 2
+  requires StructA(this)
+{
+  unfold StructA(this)
+  this.x := s[0]
+  assert this.x == this.y
+}

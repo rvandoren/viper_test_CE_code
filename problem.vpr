@@ -1,0 +1,20 @@
+field x: Int
+field y: Int
+field z: Bool
+field next: Ref
+
+predicate hard(this: Ref) {
+  acc(this.next) && (this.next != null ==> acc(this.x))
+}
+
+method foo1(a: Ref, b: Ref)
+  requires hard(a)
+  requires hard(b)
+  ensures acc(a.x) && a.x == 42
+{
+  unfold hard(a)
+  a.next := null
+  a.x := 2
+  fold hard(a)
+  inhale acc(a.next, 1/1)
+}

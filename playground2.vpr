@@ -1,0 +1,11 @@
+domain List[T] {
+function nil(): List[T]
+function cons(x: T, xs: List[T]): List[T] axiom nil_cons {
+forall z: T, zs: List[T] :: cons(z, zs) != nil() }
+}
+function foo(z: Int): Int { 12
+}
+method test(x: Int, xs: List[Int]) ensures foo (3) == 12
+{
+var n: List[Int] := nil() assert n != cons(x, xs) var y: Int := foo(x) assert y == 5
+}
